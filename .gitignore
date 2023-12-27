@@ -39,3 +39,7 @@ testem.log
 Thumbs.db
 
 .nx/cache
+
+# Environment Files
+.env
+ecosystem.json
