@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './common/config/configuration';
 import { validation } from './common/config/validation';
+import { BotModule } from './bot/bot.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { validation } from './common/config/validation';
       load: [configuration],
       validationSchema: validation,
     }),
+    BotModule,
   ],
 })
 export class AppModule {}
