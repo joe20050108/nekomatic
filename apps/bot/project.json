@@ -15,7 +15,8 @@
         "main": "apps/bot/src/main.ts",
         "tsConfig": "apps/bot/tsconfig.app.json",
         "assets": ["apps/bot/src/assets"],
-        "webpackConfig": "apps/bot/webpack.config.js"
+        "webpackConfig": "apps/bot/webpack.config.js",
+        "generatePackageJson": true
       },
       "configurations": {
         "development": {},
