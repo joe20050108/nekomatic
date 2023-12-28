@@ -1,0 +1,23 @@
+diff --git a/dist/config.service.js b/dist/config.service.js
+index f4c770b0b6b49de713fd5f9480882de20743943a..4ad221c5140f5ecc5d74a08aa50ad78770b3e817 100644
+--- a/dist/config.service.js
++++ b/dist/config.service.js
+@@ -50,14 +50,14 @@ let ConfigService = exports.ConfigService = class ConfigService {
+             !options
+             ? undefined
+             : defaultValueOrOptions;
+-        const processEnvValue = this.getFromProcessEnv(propertyPath, defaultValue);
+-        if (!(0, shared_utils_1.isUndefined)(processEnvValue)) {
+-            return processEnvValue;
+-        }
+         const internalValue = this.getFromInternalConfig(propertyPath);
+         if (!(0, shared_utils_1.isUndefined)(internalValue)) {
+             return internalValue;
+         }
++        const processEnvValue = this.getFromProcessEnv(propertyPath, defaultValue);
++        if (!(0, shared_utils_1.isUndefined)(processEnvValue)) {
++            return processEnvValue;
++        }
+         return defaultValue;
+     }
+     /**
