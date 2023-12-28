@@ -1,13 +1,13 @@
 {
-    "apps": [
-        {
-            "name": "nekomatic-bot",
-            "script": "dist/apps/bot/main.js",
-            "exec_mode": "fork",
-            "env": {
-                "NODE_ENV": "production",
-                "DEBUG": true
-            }
-        }
-    ]
+  "apps": [
+    {
+      "name": "nekomatic-bot",
+      "script": "dist/apps/bot/main.js",
+      "exec_mode": "fork",
+      "env": {
+        "NODE_ENV": "production",
+        "DEBUG": true
+      }
+    }
+  ]
 }
