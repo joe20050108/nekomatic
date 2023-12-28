@@ -2,7 +2,7 @@
     "apps": [
         {
             "name": "nekomatic-bot",
-            "script": "dist/main.js",
+            "script": "dist/apps/bot/main.js",
             "exec_mode": "fork",
             "env": {
                 "NODE_ENV": "production",
