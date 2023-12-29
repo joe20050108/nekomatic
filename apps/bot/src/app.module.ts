@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import configuration from './common/config/configuration';
 import { validation } from './common/config/validation';
 import { BotModule } from './bot/bot.module';
+import { DiscordModule } from './discord/discord.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { BotModule } from './bot/bot.module';
       validationSchema: validation,
     }),
     BotModule,
+    DiscordModule,
   ],
 })
 export class AppModule {}
