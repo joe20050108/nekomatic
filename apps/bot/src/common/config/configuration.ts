@@ -7,6 +7,8 @@ export interface Config {
 
   bptfAccessToken: string;
 
+  discordBotToken: string;
+
   operator: Operator;
 
   rabbitmq: RabbitMQConfig;
@@ -16,6 +18,7 @@ export interface Config {
 
 export interface Operator {
   steam: string;
+  discord: string;
 }
 
 export interface RedisConfig {
@@ -65,6 +68,8 @@ export default (): Config => {
     bptfManagerUrl: process.env.BPTF_MANAGER_URL as string,
 
     bptfAccessToken: process.env.BPTF_ACCESS_TOKEN as string,
+
+    discordBotToken: process.env.DISCORD_BOT_TOKEN as string,
 
     operator: JSON.parse(process.env.OPERATOR),
 

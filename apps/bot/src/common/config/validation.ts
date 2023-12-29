@@ -31,6 +31,8 @@ const validation = Joi.object({
 
   BPTF_ACCESS_TOKEN: Joi.string().required(),
 
+  DISCORD_BOT_TOKEN: Joi.string().required(),
+
   OPERATOR: Joi.string().required(),
 
   RABBITMQ_HOST: Joi.string().required(),
