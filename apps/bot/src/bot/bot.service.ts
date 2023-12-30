@@ -48,5 +48,24 @@ export class BotService {
         throw new Error(error);
       });
     this.logger.log(`Saved backpack.tf access token`);
+    this.logger.debug(`Registering backpack.tf user agent`);
+    await axios
+      .post(
+        `${this.configService.getOrThrow<string>('bptfManagerUrl')}/agents/${
+          this.bot.steamid64
+        }/register`,
+        {
+          userAgent:
+            'Nekomatic' +
+            (this.configService.get<string>('customUserAgentHeader')
+              ? ` - ${this.configService.get<string>('customUserAgentHeader')}`
+              : ' - Trading done the cute way! :3'),
+        }
+      )
+      .catch((error) => {
+        this.logger.error(error);
+        throw new Error(error);
+      });
+    this.logger.log(`Registered backpack.tf user agent`);
   }
 }

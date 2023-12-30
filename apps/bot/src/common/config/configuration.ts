@@ -7,6 +7,8 @@ export interface Config {
 
   bptfAccessToken: string;
 
+  customUserAgentHeader?: string;
+
   discordBotToken: string;
 
   operator: Operator;
@@ -68,6 +70,8 @@ export default (): Config => {
     bptfManagerUrl: process.env.BPTF_MANAGER_URL as string,
 
     bptfAccessToken: process.env.BPTF_ACCESS_TOKEN as string,
+
+    customUserAgentHeader: process.env.CUSTOM_USERAGENT_HEADER as string,
 
     discordBotToken: process.env.DISCORD_BOT_TOKEN as string,
 

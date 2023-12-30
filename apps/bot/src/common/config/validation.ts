@@ -31,6 +31,8 @@ const validation = Joi.object({
 
   BPTF_ACCESS_TOKEN: Joi.string().required(),
 
+  CUSTOM_USERAGENT_HEADER: Joi.string().optional(),
+
   DISCORD_BOT_TOKEN: Joi.string().required(),
 
   OPERATOR: Joi.string().required(),

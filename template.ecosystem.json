@@ -12,6 +12,7 @@
         "BOT_URL": "",
         "BPTF_MANAGER_URL": "",
         "BPTF_ACCESS_TOKEN": "",
+        "CUSTOM_USERAGENT_HEADER": "",
         "DISCORD_BOT_TOKEN": "",
         "OPERATOR": {
           "steam": "",
