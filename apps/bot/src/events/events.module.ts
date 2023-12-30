@@ -3,6 +3,7 @@ import { EventsService } from './events.service';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { ConfigService } from '@nestjs/config';
 import { Config, RabbitMQConfig } from '../common/config/configuration';
+import { BotModule } from '../bot/bot.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { Config, RabbitMQConfig } from '../common/config/configuration';
         };
       },
     }),
+    BotModule,
   ],
   providers: [EventsService],
 })

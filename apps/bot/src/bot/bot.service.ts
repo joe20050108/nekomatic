@@ -3,16 +3,29 @@ import { ConfigService } from '@nestjs/config';
 import { Config } from '../common/config/configuration';
 import axios from 'axios';
 import { Bot } from '@tf2-automatic/bot-data';
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 @Injectable()
 export class BotService {
   private readonly logger = new Logger(BotService.name);
 
   private bot: Bot;
+  private ready: boolean;
 
-  constructor(private readonly configService: ConfigService<Config>) {}
+  constructor(
+    private readonly configService: ConfigService<Config>,
+    private eventEmitter: EventEmitter2
+  ) {}
 
   getBot(): Bot {
     return this.bot;
+  }
+
+  @OnEvent(`nekomatic.bot.ready`) onReady() {
+    this.logger.log('onReady()');
+    this.ready = true;
+  }
+  isReady(): boolean {
+    return this.ready;
   }
 
   // Main Service Start Function
@@ -78,5 +91,8 @@ export class BotService {
         throw new Error(error);
       });
     this.logger.log(`Sent backpack.tf user agent to bptf-manager`);
+
+    // Emit 'ready'
+    this.eventEmitter.emit(`nekomatic.bot.ready`);
   }
 }
