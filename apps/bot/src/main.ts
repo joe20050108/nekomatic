@@ -11,6 +11,9 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder } from '@nestjs/swagger';
 import { SwaggerModule } from '@nestjs/swagger';
+import { ConfigService } from '@nestjs/config';
+import { Config } from './common/config/configuration';
+import { BotService } from './bot/bot.service';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -19,7 +22,6 @@ async function bootstrap() {
         ? ['log', 'debug', 'error', 'verbose', 'warn']
         : ['log', 'warn', 'error'],
   });
-  app.enableShutdownHooks();
 
   const config = new DocumentBuilder()
     .setTitle('Bot API Documentation')
@@ -29,9 +31,35 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
+  const configService: ConfigService<Config> = app.get(ConfigService);
+  const botService: BotService = app.get(BotService);
+
+  app.enableShutdownHooks();
+
+  const port = configService.getOrThrow<number>('port');
+
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3000;
+
+  try {
+    await app.init();
+  } catch (err) {
+    Logger.error('Failed to initialize application');
+    console.error(err);
+    await app.close();
+    process.exit(1);
+  }
+
+  // Start bot after everything else to make sure events will be caught and handled properly
+  try {
+    await botService.start();
+  } catch (err) {
+    Logger.error('Failed to start bot');
+    console.error(err);
+    await app.close();
+    process.exit(1);
+  }
+
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
