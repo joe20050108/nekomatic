@@ -11,12 +11,16 @@ import {
 import { BotService } from '../bot/bot.service';
 import { ConfigService } from '@nestjs/config';
 import { Config } from '../common/config/configuration';
+import axios from 'axios';
 
 @Injectable()
 export class EventsService {
   private readonly logger = new Logger(EventsService.name);
 
-  constructor(private readonly botService: BotService, private readonly configService: ConfigService<Config>) {}
+  constructor(
+    private readonly botService: BotService,
+    private readonly configService: ConfigService<Config>
+  ) {}
 
   @RabbitSubscribe({
     name: `nekomatic.bot.${FRIEND_MESSAGE_EVENT}`,
@@ -36,8 +40,27 @@ export class EventsService {
       this.logger.verbose(
         `Got new message from ${event.data.steamid64}: ${event.data.message}`
       );
-      if (event.data.message.startsWith(this.configService.get<string>("prefix") ? this.configService.getOrThrow<string>("prefix") : "!")) {
-        console.log("eeee");
+      if (
+        event.data.message.startsWith(
+          this.configService.get<string>('prefix')
+            ? this.configService.getOrThrow<string>('prefix')
+            : '!'
+        )
+      ) {
+        await axios.post(
+          `${this.configService.getOrThrow<string>('botUrl')}/friends/${
+            event.data.steamid64
+          }/typing`
+        );
+        await axios.post(
+          `${this.configService.getOrThrow<string>('botUrl')}/friends/${
+            event.data.steamid64
+          }/message`,
+          {
+            message: 'Nekomatic - Trading don- NYAH~?!',
+          }
+        );
+        return new Nack(false);
       }
     }
   }
