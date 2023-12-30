@@ -21,7 +21,7 @@ export class BotService {
   }
 
   @OnEvent(`nekomatic.bot.ready`) onReady() {
-    this.logger.log('onReady()');
+    this.logger.debug('onReady()');
     this.ready = true;
   }
   isReady(): boolean {
@@ -82,7 +82,7 @@ export class BotService {
           userAgent:
             'Nekomatic' +
             (this.configService.get<string>('customUserAgentHeader')
-              ? ` - ${this.configService.get<string>('customUserAgentHeader')}`
+              ? ` - ${this.configService.getOrThrow<string>('customUserAgentHeader')}`
               : ' - Trading done the cute way! :3'),
         }
       )
