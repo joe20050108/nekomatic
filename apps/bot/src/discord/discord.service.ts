@@ -11,8 +11,14 @@ export class DiscordService {
 
   @Once('ready')
   public async onReady(@Context() [client]: ContextOf<'ready'>) {
+    this.logger.debug('onReady()');
     this.logger.log(`Bot logged in as ${client.user.username}`);
     // Create a DM with the operator's discord ID.
+    this.logger.verbose(
+      `Creating DM channel with ${
+        this.configService.getOrThrow<Operator>('operator').discord
+      }`
+    );
     await client.users
       .fetch(this.configService.getOrThrow<Operator>('operator').discord)
       .then((operatorUser) => {

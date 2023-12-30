@@ -17,8 +17,13 @@ export class BotService {
 
   // Main Service Start Function
   async start(): Promise<void> {
-    this.logger.debug(
-      `Getting bot from ${this.configService.getOrThrow<string>('botUrl')}/bot`
+    this.logger.debug('start()');
+    this.logger.log('Starting Nekomatic...');
+
+    this.logger.verbose(
+      `Retrieving bot information from ${this.configService.getOrThrow<string>(
+        'botUrl'
+      )}`
     );
     await axios
       .get(`${this.configService.getOrThrow<string>('botUrl')}/bot`)
@@ -30,10 +35,11 @@ export class BotService {
         throw new Error(error);
       });
     this.logger.log(`Got bot SteamID64 ${this.bot.steamid64}`);
-    this.logger.debug(
-      `Submitting backpack.tf access token to ${this.configService.getOrThrow<string>(
+
+    this.logger.verbose(
+      `Sending access token to ${this.configService.getOrThrow<string>(
         'bptfManagerUrl'
-      )}/tokens`
+      )}`
     );
     await axios
       .post(
@@ -47,8 +53,13 @@ export class BotService {
         this.logger.error(error);
         throw new Error(error);
       });
-    this.logger.log(`Saved backpack.tf access token`);
-    this.logger.debug(`Registering backpack.tf user agent`);
+    this.logger.log(`Sent backpack.tf access token to bptf-manager`);
+
+    this.logger.verbose(
+      `Sending user agent to ${this.configService.getOrThrow<string>(
+        'bptfManagerUrl'
+      )}`
+    );
     await axios
       .post(
         `${this.configService.getOrThrow<string>('bptfManagerUrl')}/agents/${
@@ -66,6 +77,6 @@ export class BotService {
         this.logger.error(error);
         throw new Error(error);
       });
-    this.logger.log(`Registered backpack.tf user agent`);
+    this.logger.log(`Sent backpack.tf user agent to bptf-manager`);
   }
 }
