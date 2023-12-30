@@ -5,6 +5,7 @@ import { validation } from './common/config/validation';
 import { BotModule } from './bot/bot.module';
 import { DiscordModule } from './discord/discord.module';
 import { EventsModule } from './events/events.module';
+import { CommandsModule } from './commands/commands.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { EventsModule } from './events/events.module';
     BotModule,
     DiscordModule,
     EventsModule,
+    CommandsModule,
   ],
 })
 export class AppModule {}

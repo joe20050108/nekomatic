@@ -36,6 +36,7 @@ const validation = Joi.object({
   DISCORD_BOT_TOKEN: Joi.string().required(),
 
   OPERATOR: Joi.string().required(),
+  PREFIX: Joi.string().optional(),
 
   RABBITMQ_HOST: Joi.string().required(),
   RABBITMQ_PORT: Joi.number().required(),

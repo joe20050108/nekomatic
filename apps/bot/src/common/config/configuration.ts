@@ -12,6 +12,7 @@ export interface Config {
   discordBotToken: string;
 
   operator: Operator;
+  prefix?: string;
 
   rabbitmq: RabbitMQConfig;
   storage: S3StorageConfig | LocalStorageConfig;
@@ -76,6 +77,7 @@ export default (): Config => {
     discordBotToken: process.env.DISCORD_BOT_TOKEN as string,
 
     operator: JSON.parse(process.env.OPERATOR),
+    prefix: process.env.PREFIX,
 
     rabbitmq: {
       host: process.env.RABBITMQ_HOST as string,

@@ -19,7 +19,7 @@ import { GatewayIntentBits } from 'discord.js';
             GatewayIntentBits.DirectMessages,
             GatewayIntentBits.MessageContent,
           ],
-          prefix: '!',
+          prefix: configService.get<string>("prefix") ? configService.getOrThrow<string>("prefix") : "!",
         };
       },
     }),
