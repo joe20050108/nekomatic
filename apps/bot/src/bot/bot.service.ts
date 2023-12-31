@@ -10,10 +10,25 @@ export class BotService {
 
   private bot: Bot;
 
+  private readonly botUrl: string;
+  private readonly bptfManagerUrl: string;
+  private readonly accessToken: string;
+  private readonly userAgent: string;
+
   constructor(
     private readonly configService: ConfigService<Config>,
     private eventEmitter: EventEmitter2
-  ) {}
+  ) {
+    this.botUrl = this.configService.getOrThrow<string>('botUrl');
+    this.bptfManagerUrl =
+      this.configService.getOrThrow<string>('bptfManagerUrl');
+    this.accessToken = this.configService.getOrThrow<string>('bptfAccessToken');
+    this.userAgent =
+      'Nekomatic' +
+      (this.configService.get<string>('customUserAgentHeader')
+        ? ` - ${this.configService.getOrThrow<string>('customUserAgentHeader')}`
+        : ' - Trading done the cute way! :3');
+  }
 
   getBot(): Bot {
     return this.bot;
@@ -24,13 +39,9 @@ export class BotService {
     this.logger.debug('start()');
     this.logger.log('Starting Nekomatic...');
 
-    this.logger.verbose(
-      `Retrieving bot information from ${this.configService.getOrThrow<string>(
-        'botUrl'
-      )}`
-    );
+    this.logger.verbose(`Retrieving bot information from ${this.botUrl}`);
     await axios
-      .get(`${this.configService.getOrThrow<string>('botUrl')}/bot`)
+      .get(`${this.botUrl}/bot`)
       .then((response) => {
         this.bot = response.data;
       })
@@ -40,45 +51,23 @@ export class BotService {
       });
     this.logger.log(`Got bot SteamID64 ${this.bot.steamid64}`);
 
-    this.logger.verbose(
-      `Sending access token to ${this.configService.getOrThrow<string>(
-        'bptfManagerUrl'
-      )}`
-    );
+    this.logger.verbose(`Sending access token to ${this.bptfManagerUrl}`);
     await axios
-      .post(
-        `${this.configService.getOrThrow<string>('bptfManagerUrl')}/tokens`,
-        {
-          steamid64: this.bot.steamid64,
-          value: this.configService.getOrThrow<string>('bptfAccessToken'),
-        }
-      )
+      .post(`${this.bptfManagerUrl}/tokens`, {
+        steamid64: this.bot.steamid64,
+        value: this.accessToken,
+      })
       .catch((error) => {
         this.logger.error(error);
         throw new Error(error);
       });
     this.logger.log(`Sent backpack.tf access token to bptf-manager`);
 
-    this.logger.verbose(
-      `Sending user agent to ${this.configService.getOrThrow<string>(
-        'bptfManagerUrl'
-      )}`
-    );
+    this.logger.verbose(`Sending user agent to ${this.bptfManagerUrl}`);
     await axios
-      .post(
-        `${this.configService.getOrThrow<string>('bptfManagerUrl')}/agents/${
-          this.bot.steamid64
-        }/register`,
-        {
-          userAgent:
-            'Nekomatic' +
-            (this.configService.get<string>('customUserAgentHeader')
-              ? ` - ${this.configService.getOrThrow<string>(
-                  'customUserAgentHeader'
-                )}`
-              : ' - Trading done the cute way! :3'),
-        }
-      )
+      .post(`${this.bptfManagerUrl}/agents/${this.bot.steamid64}/register`, {
+        userAgent: this.userAgent,
+      })
       .catch((error) => {
         this.logger.error(error);
         throw new Error(error);

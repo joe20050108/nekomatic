@@ -18,11 +18,18 @@ import { OnEvent } from '@nestjs/event-emitter';
 export class FriendEventService {
   private readonly logger = new Logger(FriendEventService.name);
   private ready: boolean; // Ready to handle events
+  private readonly botUrl: string;
+  private readonly prefix: string;
 
   constructor(
     private readonly botService: BotService,
     private readonly configService: ConfigService<Config>
-  ) {}
+  ) {
+    this.botUrl = this.configService.getOrThrow<string>('botUrl');
+    this.prefix = this.configService.get<string>('prefix')
+      ? this.configService.getOrThrow<string>('prefix')
+      : '!';
+  }
 
   @OnEvent('nekomatic.bot.ready') onReady() {
     this.logger.debug('onReady()');
@@ -48,22 +55,12 @@ export class FriendEventService {
       this.logger.verbose(
         `Got new message from ${event.data.steamid64}: ${event.data.message}`
       );
-      if (
-        event.data.message.startsWith(
-          this.configService.get<string>('prefix')
-            ? this.configService.getOrThrow<string>('prefix')
-            : '!'
-        )
-      ) {
+      if (event.data.message.startsWith(this.prefix)) {
         await axios.post(
-          `${this.configService.getOrThrow<string>('botUrl')}/friends/${
-            event.data.steamid64
-          }/typing`
+          `${this.botUrl}/friends/${event.data.steamid64}/typing`
         );
         await axios.post(
-          `${this.configService.getOrThrow<string>('botUrl')}/friends/${
-            event.data.steamid64
-          }/message`,
+          `${this.botUrl}/friends/${event.data.steamid64}/message`,
           {
             message: 'Nekomatic - Trading don- NYAH~?!',
           }
