@@ -3,13 +3,12 @@ import { ConfigService } from '@nestjs/config';
 import { Config } from '../common/config/configuration';
 import axios from 'axios';
 import { Bot } from '@tf2-automatic/bot-data';
-import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 @Injectable()
 export class BotService {
   private readonly logger = new Logger(BotService.name);
 
   private bot: Bot;
-  private ready: boolean;
 
   constructor(
     private readonly configService: ConfigService<Config>,
@@ -18,14 +17,6 @@ export class BotService {
 
   getBot(): Bot {
     return this.bot;
-  }
-
-  @OnEvent(`nekomatic.bot.ready`) onReady() {
-    this.logger.debug('onReady()');
-    this.ready = true;
-  }
-  isReady(): boolean {
-    return this.ready;
   }
 
   // Main Service Start Function

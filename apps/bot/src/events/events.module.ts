@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { EventsService } from './events.service';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { ConfigService } from '@nestjs/config';
 import { Config, RabbitMQConfig } from '../common/config/configuration';
 import { BotModule } from '../bot/bot.module';
+import { FriendEventService } from './friend-event.service';
 
 @Module({
   imports: [
@@ -19,6 +19,6 @@ import { BotModule } from '../bot/bot.module';
     }),
     BotModule,
   ],
-  providers: [EventsService],
+  providers: [FriendEventService],
 })
 export class EventsModule {}

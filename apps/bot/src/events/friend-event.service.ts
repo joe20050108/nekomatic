@@ -1,4 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { BotService } from '../bot/bot.service';
+import { ConfigService } from '@nestjs/config';
+import { Config } from '../common/config/configuration';
 import {
   Nack,
   RabbitSubscribe,
@@ -8,19 +11,23 @@ import {
   FRIEND_MESSAGE_EVENT,
   FriendMessageEvent,
 } from '@tf2-automatic/bot-data';
-import { BotService } from '../bot/bot.service';
-import { ConfigService } from '@nestjs/config';
-import { Config } from '../common/config/configuration';
 import axios from 'axios';
+import { OnEvent } from '@nestjs/event-emitter';
 
 @Injectable()
-export class EventsService {
-  private readonly logger = new Logger(EventsService.name);
+export class FriendEventService {
+  private readonly logger = new Logger(FriendEventService.name);
+  private ready: boolean; // Ready to handle events
 
   constructor(
     private readonly botService: BotService,
     private readonly configService: ConfigService<Config>
   ) {}
+
+  @OnEvent('nekomatic.bot.ready') onReady() {
+    this.logger.debug('onReady()');
+    this.ready = true;
+  }
 
   @RabbitSubscribe({
     name: `nekomatic.bot.${FRIEND_MESSAGE_EVENT}`,
@@ -31,7 +38,7 @@ export class EventsService {
     errorHandler: requeueErrorHandler,
   })
   async onFriendMessage(event: FriendMessageEvent) {
-    if (!this.botService.isReady()) {
+    if (!this.ready) {
       return new Nack(true); // Requeue until the bot is ready to prevent unwanted errors
     }
     if (event.metadata.steamid64 !== this.botService.getBot().steamid64) {
