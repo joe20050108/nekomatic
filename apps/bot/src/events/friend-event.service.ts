@@ -29,6 +29,7 @@ export class FriendEventService {
     this.ready = true;
   }
 
+  /* --- FRIEND MESSAGE EVENT --- */
   @RabbitSubscribe({
     name: `nekomatic.bot.${FRIEND_MESSAGE_EVENT}`,
     queue: `nekomatic.bot.${FRIEND_MESSAGE_EVENT}`,
