@@ -9,7 +9,7 @@ export interface Config {
 
   customUserAgentHeader?: string;
 
-  discordBotToken: string;
+  discordBotToken?: string;
 
   operator: Operator;
   prefix?: string;

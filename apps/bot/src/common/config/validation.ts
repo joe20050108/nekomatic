@@ -33,7 +33,7 @@ const validation = Joi.object({
 
   CUSTOM_USERAGENT_HEADER: Joi.string().optional(),
 
-  DISCORD_BOT_TOKEN: Joi.string().required(),
+  DISCORD_BOT_TOKEN: Joi.string().optional(),
 
   OPERATOR: Joi.string().required(),
   PREFIX: Joi.string().optional(),

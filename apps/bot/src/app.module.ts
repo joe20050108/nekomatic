@@ -3,7 +3,6 @@ import { ConfigModule } from '@nestjs/config';
 import configuration from './common/config/configuration';
 import { validation } from './common/config/validation';
 import { BotModule } from './bot/bot.module';
-import { DiscordModule } from './discord/discord.module';
 import { EventsModule } from './events/events.module';
 import { CommandsModule } from './commands/commands.module';
 
@@ -16,7 +15,6 @@ import { CommandsModule } from './commands/commands.module';
       validationSchema: validation,
     }),
     BotModule,
-    DiscordModule,
     EventsModule,
     CommandsModule,
   ],
