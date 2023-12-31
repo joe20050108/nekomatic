@@ -5,6 +5,7 @@ import { validation } from './common/config/validation';
 import { BotModule } from './bot/bot.module';
 import { EventsModule } from './events/events.module';
 import { CommandsModule } from './commands/commands.module';
+import { StorageModule } from './storage/storage.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { CommandsModule } from './commands/commands.module';
     BotModule,
     EventsModule,
     CommandsModule,
+    StorageModule,
   ],
 })
 export class AppModule {}
